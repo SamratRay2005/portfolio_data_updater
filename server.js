@@ -52,6 +52,10 @@ const setupAdminPanel = async () => {
         },
       }
     );
+
+    app.get('/', (req, res) => {
+        res.redirect('/admin');
+    });
     
     app.use(admin.options.rootPath, adminRouter);
   }
