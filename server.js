@@ -14,6 +14,7 @@ AdminJS.registerAdapter({
 });
 
 const app = express();
+app.set('trust proxy', 1);
 let adminRouter; // Cache the router to prevent re-building on every request
 
 const setupAdminPanel = async () => {
@@ -42,7 +43,7 @@ const setupAdminPanel = async () => {
       {
         store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
         resave: false,
-        saveUninitialized: true,
+        saveUninitialized: false,
         secret: process.env.SESSION_SECRET || 'local-secret',
         cookie: {
             httpOnly: true,
@@ -62,10 +63,10 @@ const setupAdminPanel = async () => {
 };
 
 // 3. Vercel Handler (Exported)
-export default async function handler(req, res) {
-  await setupAdminPanel();
-  return app(req, res);
-}
+// export default async function handler(req, res) {
+//   await setupAdminPanel();
+//   return app(req, res);
+// }
 
 // 4. Local Handler (For 'npm start')
 if (process.argv[1] === new URL(import.meta.url).pathname) {
